@@ -14,7 +14,7 @@ const __dirname = path.resolve();
 app.use(express.json());
 app.use(cookieParser());
 app.use(cors({
-    origin: 'https://urbanfix-five.vercel.app',
+    origin: 'https://urbanfix-nine.vercel.app',
     credentials: true,
 }));
 
