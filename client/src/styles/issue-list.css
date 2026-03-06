@@ -1,0 +1,42 @@
+/* ===== Issue List - Grid Layout ===== */
+.issue-list {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .issue-list {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .issue-list {
+    grid-template-columns: 1fr;
+    gap: 16px;
+  }
+}
+
+.issue-list-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 64px 24px;
+  text-align: center;
+  color: var(--color-text-muted);
+  grid-column: 1 / -1;
+}
+
+.empty-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 16px;
+  opacity: 0.5;
+}
+
+.issue-list-empty p {
+  font-size: 1rem;
+  font-weight: 500;
+}

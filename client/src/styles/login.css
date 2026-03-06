@@ -1,0 +1,134 @@
+/* ===== Login Page ===== */
+.login-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 32px 24px;
+}
+
+.login-card {
+  width: 100%;
+  max-width: 420px;
+  background-color: var(--color-surface);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-xl);
+  padding: 40px 32px;
+  box-shadow: var(--shadow-lg);
+}
+
+.login-header {
+  text-align: center;
+  margin-bottom: 32px;
+}
+
+.login-icon {
+  width: 48px;
+  height: 48px;
+  color: var(--color-primary);
+  margin-bottom: 16px;
+}
+
+.login-title {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
+.login-subtitle {
+  font-size: 0.875rem;
+  color: var(--color-text-secondary);
+  margin-top: 4px;
+}
+
+.login-form .form-group {
+  margin-bottom: 18px;
+}
+
+.login-form .form-group-pair {
+  display: flex;
+  gap: 16px;
+  
+}
+
+.form-col {
+  flex: 1 1 0;
+  position: relative;
+}
+
+.form-group-pair .form-col label {
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  background-color: var(--color-surface);
+  padding: 0 4px;
+  font-weight: 600;
+}
+
+.form-group-pair .form-col input {
+  padding: 12px;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-md);
+  width: 100%;
+  outline: none;
+  color:var(--color-text-bg);
+  transition: border-color 0.2s, box-shadow 0.2s ;
+  font-family: var(--font-family);
+  background-color: var(--color-surface);
+}
+.login-buttons {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.login-btn {
+  width: 100%;
+  padding: 13px;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  border: none;
+  border-radius: var(--radius-md);
+  transition: background-color 0.2s, transform 0.1s;
+}
+
+.login-btn:active {
+  transform: scale(0.98);
+}
+
+.login-btn-user {
+  background-color: var(--color-primary);
+  color: #fff;
+}
+
+.login-btn-user:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.login-btn-admin {
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  border: 1px solid var(--color-border);
+}
+
+.login-btn-admin:hover {
+  background-color: var(--color-border);
+}
+
+.login-note {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--color-text-muted);
+  margin-top: 24px;
+}
+ .create-account-link {
+  color: var(--color-primary);
+  text-decoration: none;
+  margin-left: 4px;
+}
+
+@media (max-width: 640px) {
+  .login-card {
+    padding: 28px 20px;
+  }
+}
