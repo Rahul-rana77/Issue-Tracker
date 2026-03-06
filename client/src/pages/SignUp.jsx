@@ -20,7 +20,7 @@ function SignUp() {
     }
 
     try{
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/admin/register`,{
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/user/register`,{
         fullName,
         phone,
         email,
