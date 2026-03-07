@@ -1,6 +1,7 @@
 import { Link } from "react-router-dom";
-import "../styles/error.css";
+import "../styles/error-page.css";
 import { useNavigate } from "react-router-dom";
+
 function Unauthorized() {
     const navigate = useNavigate()
     if(response.status==401){
