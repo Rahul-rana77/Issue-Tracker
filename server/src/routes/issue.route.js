@@ -1,7 +1,7 @@
 import { createIssue, getAllIssues, getIssueById, deleteIssue,updateIssueStatus } from "../controllers/issue.controller.js";
 import express from "express";
 import multer from "multer";
-import authenticateUserMiddleware  from "../middlewares/auth.middleware.js";
+import {authenticateUserMiddleware, authenticateAdminMiddleware}  from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -33,7 +33,7 @@ router.route("/create-issue")
 
 router.route("/update-status/:id")
     .put(
-        authenticateUserMiddleware,
+        authenticateAdminMiddleware,
         updateIssueStatus
     );
 
