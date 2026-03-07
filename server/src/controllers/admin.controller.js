@@ -62,10 +62,14 @@ const loginAdmin = async (req, res) => {
         if (!isCodeValid) {
             return res.status(400).json({ message: "Invalid admin code" });
         }
-        const token = jwt.sign({
+        const adminToken = jwt.sign({
             id: admin._id,
         }, process.env.JWT_SECRET);
-        res.cookie("token", token);
+        res.cookie("adminToken", adminToken, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'lax'
+        });
 
         res.status(200).json({
             message: "Admin logged in successfully",
@@ -81,7 +85,7 @@ const loginAdmin = async (req, res) => {
 };
 
 const logoutAdmin = (req, res) => {
-    res.clearCookie("token",{
+    res.clearCookie("adminToken",{
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax'
