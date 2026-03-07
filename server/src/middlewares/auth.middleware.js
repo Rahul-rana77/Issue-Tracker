@@ -6,7 +6,7 @@ const authenticateMiddleware = async (req, res, next) => {
   try {
     const token = req.cookies.token;
     const adminToken = req.cookies.adminToken;
-
+    console.log("cookies:", req.cookies);
     if (token) {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await userModel.findById(decoded.id);
