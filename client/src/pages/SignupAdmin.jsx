@@ -2,6 +2,7 @@ import { Link } from "react-router-dom"
 import "../styles/login.css"
 import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
+import Navbar from "../components/Navbar"
 
 function SignupAdmin() {
     const navigate = useNavigate()
@@ -47,6 +48,7 @@ function SignupAdmin() {
   };
   return (
     <div className="login-page">
+      <Navbar variant="admin" />
       <div className="login-card">
 
         <div className="login-header">
