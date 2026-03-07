@@ -23,7 +23,11 @@ const registerUser = async (req, res) => {
              id: User._id, 
             }, process.env.JWT_SECRET);
 
-        res.cookie("token", token);
+        res.cookie("token", token,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None'
+        });
 
         res.status(201).json({ 
             message: "User registered successfully", 
@@ -52,7 +56,11 @@ const loginUser = async (req, res) => {
             return res.status(400).json({ message: "Invalid email or password" });
         }
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
-        res.cookie("token", token);
+        res.cookie("token", token, {
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None'
+        });
         res.status(200).json({ 
             message: "Login successful", 
             user: {
@@ -71,7 +79,7 @@ const logoutUser = (req, res) => {
     res.clearCookie("token",{
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        sameSite: 'None'
     });
     res.status(200).json({ message: "Logout successful" });
 };

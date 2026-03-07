@@ -35,7 +35,11 @@ const registerAdmin = async (req, res) => {
         const adminToken = jwt.sign({
              id: Admin._id, 
             }, process.env.JWT_SECRET);
-        res.cookie("adminToken", adminToken);
+        res.cookie("adminToken", adminToken,{
+            httpOnly: true,
+            secure: process.env.NODE_ENV === 'production',
+            sameSite: 'None'
+        });
 
         res.status(201).json({ 
             message: "Admin registered successfully", 
@@ -68,7 +72,7 @@ const loginAdmin = async (req, res) => {
         res.cookie("adminToken", adminToken, {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'lax'
+            sameSite: 'None'
         });
 
         res.status(200).json({
@@ -88,7 +92,7 @@ const logoutAdmin = (req, res) => {
     res.clearCookie("adminToken",{
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
-        sameSite: 'lax'
+        sameSite: 'None'
     });
     res.status(200).json({ message: "Logout successful" });
 };
