@@ -37,7 +37,7 @@ const registerAdmin = async (req, res) => {
             }, process.env.JWT_SECRET);
         res.cookie("adminToken", adminToken,{
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: 'None'
         });
 
@@ -71,7 +71,7 @@ const loginAdmin = async (req, res) => {
         }, process.env.JWT_SECRET);
         res.cookie("adminToken", adminToken, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: 'None'
         });
 
@@ -91,7 +91,7 @@ const loginAdmin = async (req, res) => {
 const logoutAdmin = (req, res) => {
     res.clearCookie("adminToken",{
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'None'
     });
     res.status(200).json({ message: "Logout successful" });

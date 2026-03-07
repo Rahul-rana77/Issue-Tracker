@@ -25,7 +25,7 @@ const registerUser = async (req, res) => {
 
         res.cookie("token", token,{
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: 'None'
         });
 
@@ -58,7 +58,7 @@ const loginUser = async (req, res) => {
         const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
         res.cookie("token", token, {
             httpOnly: true,
-            secure: process.env.NODE_ENV === 'production',
+            secure: true,
             sameSite: 'None'
         });
         res.status(200).json({ 
@@ -78,7 +78,7 @@ const loginUser = async (req, res) => {
 const logoutUser = (req, res) => {
     res.clearCookie("token",{
         httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
+        secure: true,
         sameSite: 'None'
     });
     res.status(200).json({ message: "Logout successful" });
