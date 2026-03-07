@@ -2,7 +2,7 @@ import userModel from '../models/user.model.js';
 import adminModel from '../models/admin.model.js';
 import jwt from 'jsonwebtoken';
 
-const authenticateUserMiddleware = async (req, res, next) => {
+export const authenticateUserMiddleware = async (req, res, next) => {
     try {
         const token = req.cookies.token;
         if (!token) {
@@ -37,6 +37,3 @@ export const authenticateAdminMiddleware = async (req, res, next) => {
         return res.status(401).json({ message: 'Invalid token' });
     }
 };
-
-
-export default authenticateUserMiddleware;
