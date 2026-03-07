@@ -55,7 +55,6 @@ function SignUp() {
   };
   return (
     <div className="login-page">
-      <Navbar variant="user" />
       <div className="login-card">
 
         <div className="login-header">

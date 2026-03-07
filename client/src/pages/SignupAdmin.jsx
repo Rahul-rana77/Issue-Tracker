@@ -48,7 +48,6 @@ function SignupAdmin() {
   };
   return (
     <div className="login-page">
-      <Navbar variant="admin" />
       <div className="login-card">
 
         <div className="login-header">
