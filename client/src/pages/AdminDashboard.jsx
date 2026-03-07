@@ -12,7 +12,9 @@ function AdminDashboard() {
   const fetchIssues = async () => {
     try {
 
-      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/issue`)
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/issue`, {
+        withCredentials: true
+      })
 
       setIssues(res.data.issues)
 

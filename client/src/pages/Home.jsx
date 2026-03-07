@@ -11,7 +11,9 @@ function Home() {
 
   const fetchIssues = async () => {
     try {
-      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/issue/`)
+      const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/issue/`,{
+        withCredentials: true
+      })
       setallIssues(res.data.issues)
     } catch (error) {
       console.error("Error fetching issues:", error)

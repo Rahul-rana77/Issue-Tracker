@@ -14,7 +14,9 @@ function IssueDetails() {
   useEffect(() => {
     const fetchIssue = async () => {
       try {
-        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/issue/${id}`)
+        const res = await axios.get(`${import.meta.env.VITE_BASE_URL}/api/issue/${id}`,{
+          withCredentials: true
+        })
         setIssue(res.data.issue)
       } catch (error) {
         console.error("Error fetching issue:", error)

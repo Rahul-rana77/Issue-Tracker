@@ -7,7 +7,9 @@ function DeleteIssue({ onDelete }) {
     const id = useParams().id;
   const handleDelete = async () => {
     try {
-      await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/issue/${id}`);
+      await axios.delete(`${import.meta.env.VITE_BASE_URL}/api/issue/${id}`,{
+        withCredentials:true
+      });
       onDelete(id);
     } catch (error) {
       console.error('Error deleting issue:', error);
