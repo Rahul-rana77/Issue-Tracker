@@ -35,7 +35,7 @@ const registerAdmin = async (req, res) => {
         const adminToken = jwt.sign({
              id: Admin._id, 
             }, process.env.JWT_SECRET);
-        res.cookie("token", adminToken);
+        res.cookie("adminToken", adminToken);
 
         res.status(201).json({ 
             message: "Admin registered successfully", 
