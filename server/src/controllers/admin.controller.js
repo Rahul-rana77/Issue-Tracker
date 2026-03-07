@@ -36,7 +36,6 @@ const registerAdmin = async (req, res) => {
              id: Admin._id, 
             }, process.env.JWT_SECRET);
         res.cookie("adminToken", adminToken,{
-            httpOnly: true,
             secure: true,
             sameSite: 'None'
         });
@@ -70,7 +69,6 @@ const loginAdmin = async (req, res) => {
             id: admin._id,
         }, process.env.JWT_SECRET);
         res.cookie("adminToken", adminToken, {
-            httpOnly: true,
             secure: true,
             sameSite: 'None'
         });
@@ -90,7 +88,6 @@ const loginAdmin = async (req, res) => {
 
 const logoutAdmin = (req, res) => {
     res.clearCookie("adminToken",{
-        httpOnly: true,
         secure: true,
         sameSite: 'None'
     });
