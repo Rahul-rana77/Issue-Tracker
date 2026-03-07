@@ -32,6 +32,8 @@ function AdminIssueDetails() {
   try {
     await axios.put(`${import.meta.env.VITE_BASE_URL}/api/issue/update-status/${id}`, {
       status: status
+    },{
+      withCredentials:true
     })
 
     // update UI after API success
