@@ -1,7 +1,7 @@
 import { createIssue, getAllIssues, getIssueById, deleteIssue,updateIssueStatus } from "../controllers/issue.controller.js";
 import express from "express";
 import multer from "multer";
-import {authenticateUserMiddleware, authenticateAdminMiddleware}  from "../middlewares/auth.middleware.js";
+import authenticateMiddleware from "../middlewares/auth.middleware.js";
 
 const router = express.Router();
 
@@ -11,29 +11,29 @@ const upload = multer({
 
 router.route("/")
     .get(
-            authenticateUserMiddleware,
+            authenticateMiddleware,
             getAllIssues
         );
 
 router.route("/:id")
     .get(
-        authenticateUserMiddleware,
+        authenticateMiddleware,
         getIssueById
     )
     .delete( 
-        authenticateUserMiddleware,
+        authenticateMiddleware,
         deleteIssue
     );
 router.route("/create-issue")
     .post(
-        authenticateUserMiddleware, 
+        authenticateMiddleware, 
         upload.array('image',5), 
         createIssue
     );
 
 router.route("/update-status/:id")
     .put(
-        authenticateAdminMiddleware,
+        authenticateMiddleware,
         updateIssueStatus
     );
 
