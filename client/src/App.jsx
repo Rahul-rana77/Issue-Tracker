@@ -8,7 +8,7 @@ import AdminLogin from './pages/AdminLogin.jsx'
 import AdminIssueDetails from './pages/AdminIssueDetails.jsx'
 import SignUp from './pages/SignUp.jsx'
 import SignupAdmin from './pages/SignupAdmin.jsx'
-import ErrorPage from './pages/ErrorPage.jsx'
+import Unauthorized from './pages/Unauthorized.jsx'
 
 function App() {
 
@@ -24,7 +24,7 @@ function App() {
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/admin/register" element={<SignupAdmin />} />
         <Route path="/issue/admin/:id" element={<AdminIssueDetails />} />
-        <Route path="*" element={<ErrorPage />} />
+        <Route path="/error-page" element={<Unauthorized />} />
       </Routes>
     </BrowserRouter>
   )
