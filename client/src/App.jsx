@@ -7,8 +7,8 @@ import AdminDashboard from './pages/AdminDashboard.jsx'
 import AdminLogin from './pages/AdminLogin.jsx'
 import AdminIssueDetails from './pages/AdminIssueDetails.jsx'
 import SignUp from './pages/SignUp.jsx'
-import SignupAdmin from './pages/SignupAdmin.jsx'
 import Unauthorized from './pages/Unauthorized.jsx'
+import OtpSubmission from './pages/OtpSubmission.jsx'
 
 function App() {
 
@@ -22,9 +22,9 @@ function App() {
         <Route path="/user/register" element={<SignUp />} />
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin-login" element={<AdminLogin />} />
-        <Route path="/admin/register" element={<SignupAdmin />} />
         <Route path="/issue/admin/:id" element={<AdminIssueDetails />} />
         <Route path="/error-page" element={<Unauthorized />} />
+        <Route path="/otp-verification" element={<OtpSubmission />} />
       </Routes>
     </BrowserRouter>
   )

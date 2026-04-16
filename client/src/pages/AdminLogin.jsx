@@ -46,7 +46,7 @@ const AdminLogin = () => {
   return (
     <>
     <div className="page">
-      <Navbar variant="user" />
+      <Navbar variant="admin" />
       <main className="login-page">
         <div className="login-card">
           <div className="login-header">
