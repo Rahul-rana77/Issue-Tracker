@@ -21,7 +21,7 @@ function App() {
         <Route path="/" element={<Login />} />
         <Route path="/user/register" element={<SignUp />} />
         <Route path="/admin" element={<AdminDashboard />} />
-        <Route path="/admin-login" element={<AdminLogin />} />
+        <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/issue/admin/:id" element={<AdminIssueDetails />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/otp-verification" element={<OtpSubmission />} />

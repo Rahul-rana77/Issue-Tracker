@@ -84,11 +84,10 @@ function Login() {
                 <div className='login-buttons'>
                   <button type="submit" className='login-btn login-btn-user'>Login as User</button>
                 </div>
-                <div className='login-buttons'>
+               </form>
+               <div className='login-buttons'>
                   <Link to="/admin/login" className='login-btn login-btn-admin'>Login as Admin</Link>
                 </div>
-
-               </form>
                <p className='login-note'>Don't have an account? 
                 <Link to="/user/register" className='create-account-link'> Sign Up
                 </Link>
