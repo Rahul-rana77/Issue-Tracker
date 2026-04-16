@@ -3,10 +3,6 @@ import "../styles/error-page.css";
 import { useNavigate } from "react-router-dom";
 
 function Unauthorized() {
-    const navigate = useNavigate()
-    if(response.status==401){
-        navigate("/error-page")
-    }
   return (
     <div className="error-page">
       <div className="error-card">
@@ -30,7 +26,7 @@ function Unauthorized() {
         </p>
 
         <div className="error-buttons">
-          <Link to="/" className="error-btn">
+          <Link to="/user/login" className="error-btn">
             Login
           </Link>
         </div>

@@ -23,7 +23,7 @@ function App() {
         <Route path="/admin" element={<AdminDashboard />} />
         <Route path="/admin-login" element={<AdminLogin />} />
         <Route path="/issue/admin/:id" element={<AdminIssueDetails />} />
-        <Route path="/error-page" element={<Unauthorized />} />
+        <Route path="/unauthorized" element={<Unauthorized />} />
         <Route path="/otp-verification" element={<OtpSubmission />} />
       </Routes>
     </BrowserRouter>

@@ -11,7 +11,7 @@ const authenticateMiddleware = async (req, res, next) => {
       const decoded = jwt.verify(token, process.env.JWT_SECRET);
       const user = await userModel.findById(decoded.id);
       if (!user) {
-        return res.status(401).json({ message: "User not found" });
+        return res.status(401).json({ message: "User not found" }).redirect("/unauthorized");
       }
       req.user = user;
       return next();
@@ -21,16 +21,16 @@ const authenticateMiddleware = async (req, res, next) => {
       const decoded = jwt.verify(adminToken, process.env.JWT_SECRET);
       const admin = await adminModel.findById(decoded.id);
       if (!admin) {
-        return res.status(401).json({ message: "Admin not found" });
+        return res.status(401).json({ message: "Admin not found" }).redirect("/unauthorized");
       }
       req.admin = admin;
       return next();
     }
 
-    return res.status(401).json({ message: "Please login first" });
+    return res.status(401).json({ message: "Please login first" }).redirect("/unauthorized");
 
   } catch (error) {
-    return res.status(401).json({ message: "Invalid token" });
+    return res.status(401).json({ message: "Invalid token" }).redirect("/unauthorized");
   }
 };
 
