@@ -85,7 +85,7 @@ function Login() {
                   <button type="submit" className='login-btn login-btn-user'>Login as User</button>
                 </div>
                 <div className='login-buttons'>
-                  <button type="submit" className='login-btn login-btn-admin'>Login as Admin</button>
+                  <Link to="/admin/login" className='login-btn login-btn-admin'>Login as Admin</Link>
                 </div>
 
                </form>
