@@ -3,6 +3,7 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { sendEmail } from "../services/email.service.js";
+import { createMessage } from "../services/sms.service.js";
 import { generateOTP, getOtpHTML, otpBody } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
