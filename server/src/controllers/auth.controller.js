@@ -51,7 +51,7 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
         console.error("Error in registerUser:", error);
-        res.status(500).json({ error: error });
+        res.status(500).json({ error });
 } };
 
 const verifyEmail = async (req, res) => {
