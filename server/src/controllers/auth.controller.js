@@ -161,4 +161,4 @@ const checkAuth = (req, res) => {
 };
 
 
-export { registerUser,verifyEmail, loginUser, logoutUser, checkAuth };
+export { registerUser, verifyEmail, verifyPhone, loginUser, logoutUser, checkAuth };
