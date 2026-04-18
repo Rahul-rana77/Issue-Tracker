@@ -47,19 +47,19 @@ const registerUser = async (req, res) => {
 
 const verifyEmail = async (req, res) => {
             try {
-                const {email, emailotp } = req.body;
-                const user = await userModel.findOne({ email });
+                const { emailotp } = req.body;
+                const user = await userModel.findOne({ 
+                   emailVerificationCode: emailotp
+                 }).lean();
                 if (!user) {
-                    return res.status(400).json({ message: "User not found" });
+                    return res.status(400).json({ message: "Invalid OTP or expired OTP" });
                 }
                 if (user.emailVerificationCode === emailotp) {
                     user.isVerified = true;
                     user.emailVerificationCode = undefined;
                     await user.save();
                     res.status(200).json({ message: "Email verified successfully" });
-                } else {
-                    res.status(400).json({ message: "Invalid OTP" });
-                }
+                } 
             } catch (error) {
                 console.error("Error in verifyEmail:", error);
                 res.status(500).json({ error: error.message });
