@@ -51,7 +51,7 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
         console.error("Error in registerUser:", error);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: error.message });
 } };
 
 const verifyEmail = async (req, res) => {
