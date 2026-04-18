@@ -1,18 +1,24 @@
-import adminModel from "../models/admin.model.js";
+import userModel from "../models/admin.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const loginAdmin = async (req, res) => {
     const { email, code } = req.body;
     try {
-        const admin = await adminModel.findOne({ email });
+        const admin = await userModel.findOne({ email });
         if (!admin) {
             return res.status(400).json({ message: "Invalid email " });
         }
-        const isCodeValid = await bcrypt.compare(code, admin.code);
-        if (!isCodeValid) {
-            return res.status(400).json({ message: "Invalid admin code" });
+
+        if(!admin.isVerified) {
+            return res.status(403).json({ message: "Admin not verified. Please verify your email and phone number." });
         }
+
+        const isPasswordValid = await bcrypt.compare(password, admin.password);
+        if (!isPasswordValid) {
+            return res.status(400).json({ message: "Invalid password" });
+        }
+
         const adminToken = jwt.sign({
             id: admin._id,
         }, process.env.JWT_SECRET);

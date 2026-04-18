@@ -29,8 +29,8 @@ const registerUser = async (req, res) => {
             email,
             phone,
             password: hashedPassword,
-            emailVerificationCode: emailotp,
-            phoneVerificationCode: phoneotp,
+            emailVerificationCode: hashedEmailOtp,
+            phoneVerificationCode: hashedPhoneOtp,
         });
 
         await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
@@ -51,7 +51,7 @@ const registerUser = async (req, res) => {
 
     } catch (error) {
         console.error("Error in registerUser:", error);
-        res.status(500).json({ error: error.message });
+        res.status(500).json({ error: "Internal server error" });
 } };
 
 const verifyEmail = async (req, res) => {
