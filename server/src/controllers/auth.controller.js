@@ -16,6 +16,7 @@ const registerUser = async (req, res) => {
 
         const emailotp = generateOTP();
         const emailHtml = getOtpHTML(emailotp);
+        const hashedEmailOtp = await bcrypt.hash(emailotp, 8);
 
         const User = await userModel.create({
             fullName,
@@ -26,16 +27,6 @@ const registerUser = async (req, res) => {
         });
 
         await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
-
-        const token = jwt.sign({
-             id: User._id, 
-            }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
-
-        res.cookie("token", token,{
-            secure: true,
-            sameSite: 'None',
-            httpOnly: true // Add httpOnly for better security
-        });
 
         res.status(201).json({ 
             message: "User registered successfully", 
