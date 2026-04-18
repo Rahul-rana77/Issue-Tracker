@@ -15,7 +15,7 @@ export async function createMessage(body, to) {
     const message = await client.messages.create({
       body,
       from: process.env.TWILIO_PHONE_NUMBER,
-      to,
+      to:"+919015242733"
     });
 
     console.log("✅ SID:", message.sid);
