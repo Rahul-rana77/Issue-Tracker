@@ -61,6 +61,7 @@ const verifyEmail = async (req, res) => {
                    emailVerificationCode: emailotp
                  }).lean();
                 if (!user) {
+                    alert("Invalid OTP or expired OTP");
                     return res.status(400).json({ message: "Invalid OTP or expired OTP" });
                 }
                 if (user.emailVerificationCode === emailotp) {
@@ -85,6 +86,7 @@ const verifyPhone = async (req, res) => {
             phoneVerificationCode: phoneotp
         }).lean();
         if (!user) {
+            alert("Invalid OTP or expired OTP");
             return res.status(400).json({ message: "Invalid OTP or expired OTP" });
         }
         if (user.phoneVerificationCode === phoneotp) {
@@ -98,6 +100,8 @@ const verifyPhone = async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 };
+
+setTimeout(verifyPhone, 600000);
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
