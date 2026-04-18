@@ -10,10 +10,11 @@ export async function createMessage(body, to) {
   const message = await client.messages.create({
     body,
     from: process.env.TWILIO_PHONE_NUMBER,
-    to: `+91${to}`,
+    to,
   });
   try{
-    console.log(message.body);
+    console.log("SID:", message.sid);
+    console.log("Status:", message.status);
   } catch (error) {
     console.error('Error creating SMS message:', error.message);
   }
