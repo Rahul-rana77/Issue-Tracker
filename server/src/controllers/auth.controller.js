@@ -47,7 +47,11 @@ const registerUser = async (req, res) => {
 
 const verifyEmail = async (req, res) => {
             try {
-                const { emailotp } = req.body;
+                const {email, emailotp } = req.body;
+                const user = await userModel.findOne({ email });
+                if (!user) {
+                    return res.status(400).json({ message: "User not found" });
+                }
                 if (user.emailVerificationCode === emailotp) {
                     user.isVerified = true;
                     user.emailVerificationCode = undefined;
