@@ -9,6 +9,7 @@ import path from 'path';
 dotenv.config();
 
 const app = express();
+app.use(express.json());
 const __dirname = path.resolve();
 
 app.use(express.json());

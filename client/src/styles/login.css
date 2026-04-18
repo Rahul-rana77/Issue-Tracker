@@ -39,6 +39,23 @@
   font-size: 0.875rem;
   color: var(--color-text-secondary);
   margin-top: 4px;
+  margin-bottom: -16px;
+}
+
+.form-group label{
+  font-size: 0.875rem;
+  color: var(--color-text);
+  margin-bottom: 1px;
+  display: block;
+  margin-top: 12px;
+}
+
+.form-group .form-group-pair .form-col label {
+  font-size: 0.875rem;
+  color: var(--color-text);
+  margin-bottom: 1px;
+  display: block;
+  margin-top: 12px;
 }
 
 .login-form .form-group {
@@ -75,6 +92,13 @@
   font-family: var(--font-family);
   background-color: var(--color-surface);
 }
+
+.verify-phone, .verify-email {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
 .login-buttons {
   display: flex;
   flex-direction: column;
@@ -109,6 +133,9 @@
   background-color: var(--color-bg);
   color: var(--color-text);
   border: 1px solid var(--color-border);
+  text-align: center;
+  padding: 10px;
+  margin-top: -10px;
 }
 
 .login-btn-admin:hover {

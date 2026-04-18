@@ -3,6 +3,7 @@ import "../styles/login.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
+import VerifyButton from "../components/VerifyButton"
 import { useState, useCallback } from "react";
 
 function SignUp() {
@@ -60,59 +61,97 @@ function SignUp() {
   return (
     <div className="page">
       <Navbar variant="user" />
-      <main className="signup-page">
-        <div className="signup-card">
-          <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="firstName"
-              placeholder="First Name"
-              value={formData.firstName}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="text"
-              name="lastName"
-              placeholder="Last Name"
-              value={formData.lastName}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="tel"
-              name="phone"
-              placeholder="Phone"
-              value={formData.phone}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="email"
-              name="email"
-              placeholder="Email"
-              value={formData.email}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="password"
-              placeholder="Password"
-              value={formData.password}
-              onChange={handleChange}
-              required
-            />
-            <input
-              type="password"
-              name="confirm"
-              placeholder="Confirm Password"
-              value={formData.confirm}
-              onChange={handleChange}
-              required
-            />
-            <button type="submit">Sign Up</button>
+      <main className="login-page">
+        <div className="login-card">
+          <div className="login-header">
+            <h1 className="login-title">Create an Account</h1>
+            <p className="login-subtitle">Sign up to submit your issues</p>
+          </div>
+
+          <form className="login-form" onSubmit={handleSubmit}>
+            <div className="form-group">
+              <div className="form-group-pair">
+              <div className="form-col">
+              <label htmlFor="firstName">First Name</label>
+                <input
+                  type="text"
+                  name="firstName"
+                  placeholder="First Name"
+                  value={formData.firstName}
+                  onChange={handleChange}
+                  required
+                />
+                </div>
+
+              <div className="form-col">
+              <label htmlFor="lastName">Last Name</label>
+                <input
+                  type="text"
+                  name="lastName"
+                  placeholder="Last Name"
+                  value={formData.lastName}
+                  onChange={handleChange}
+                  required
+                />
+                </div>
+              </div>
+              <label htmlFor="phone">Phone</label>
+              <div className="verify-phone">
+                <input
+                  type="tel"
+                  name="phone"
+                  placeholder="Phone"
+                  value={formData.phone}
+                  onChange={handleChange}
+                  required
+                />
+                <VerifyButton phone={formData.phone} />
+              </div>
+              <label htmlFor="email">Email</label>
+              <div className="verify-email">
+                <input
+                  type="email"
+                  name="email"
+                  placeholder="Email"
+                  value={formData.email}
+                  onChange={handleChange}
+                  required
+                />
+                <VerifyButton email={formData.email} />
+              </div>
+              <div className="form-group-pair">
+                <div className="form-col">
+              <label htmlFor="password">Password</label>
+                <input
+                  type="password"
+                  name="password"
+                  placeholder="Password"
+                  value={formData.password}
+                  onChange={handleChange}
+                  required
+                />
+                </div>
+                <div className="form-col">
+              <label htmlFor="confirm">Confirm Password</label>
+                <input
+                  type="password"
+                  name="confirm"
+                  placeholder="Confirm Password"
+                  value={formData.confirm}
+                  onChange={handleChange}
+                  required
+                />
+                </div>
+              </div>
+              <div className='login-buttons'>
+                  <button type="submit" className='login-btn login-btn-user'>SignUp as User</button>
+              </div>
+            </div>
           </form>
+          <p className='login-note'>Already have an account? 
+            <Link to="/" className='create-account-link'> Login
+            </Link>
+          </p>
         </div>
       </main>
     </div>

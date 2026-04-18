@@ -1,6 +1,8 @@
 import userModel from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import { sendEmail } from "../services/email.service.js";
+import { generateOTP, getOtpHTML } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
     try {
@@ -10,14 +12,20 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 8); // Reduced cost factor for faster hashing
+        const hashedPassword = await bcrypt.hash(password, 8);
+
+        const emailotp = generateOTP();
+        const emailHtml = getOtpHTML(emailotp);
 
         const User = await userModel.create({
             fullName,
             email,
             phone,
-            password: hashedPassword
+            password: hashedPassword,
+            emailVerificationCode: emailotp,
         });
+
+        await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
 
         const token = jwt.sign({
              id: User._id, 
@@ -36,13 +44,39 @@ const registerUser = async (req, res) => {
                 fullName: User.fullName,
                 email: User.email,
                 phone: User.phone,
+                isVerified: User.isVerified,
+                emailVerificationCode: User.emailVerificationCode,
             },
          });
 
     } catch (error) {
         console.error("Error in registerUser:", error);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ error: error.message });
 } };
+
+const verifyEmail = async (req, res) => {
+            try {
+                const { email, emailotp } = req.body;
+                const user = await userModel.findOne({ email });
+                if (!user) {
+                    return res.status(400).json({ message: "User not found" });
+                }
+                if (user.emailVerificationCode === emailotp) {
+                    user.isVerified = true;
+                    user.emailVerificationCode = undefined;
+                    await user.save();
+                    res.status(200).json({ message: "Email verified successfully" });
+                } else {
+                    res.status(400).json({ message: "Invalid OTP" });
+                }
+            } catch (error) {
+                console.error("Error in verifyEmail:", error);
+                res.status(500).json({ error: error.message });
+            }
+        };
+
+         // Set a timeout to automatically verify the email after 10 minutes (600000 ms)
+        setTimeout(verifyEmail, 600000);
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
@@ -50,6 +84,10 @@ const loginUser = async (req, res) => {
         const user = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
         if (!user) {
             return res.status(400).json({ message: "Invalid credentials" });
+        }
+
+        if (!user.isVerified) {
+            return res.status(403).json({ message: "Account not verified. Please verify your email or phone." });
         }
 
         const isPasswordValid = await bcrypt.compare(password, user.password);
@@ -74,6 +112,7 @@ const loginUser = async (req, res) => {
                 fullName: user.fullName,
                 email: user.email,
                 phone: user.phone,
+                isVerified: user.isVerified,
             },
         });
     } catch (error) {
@@ -102,4 +141,4 @@ const checkAuth = (req, res) => {
 };
 
 
-export { registerUser, loginUser, logoutUser, checkAuth };
+export { registerUser,verifyEmail, loginUser, logoutUser, checkAuth };

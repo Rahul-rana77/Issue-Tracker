@@ -2,6 +2,7 @@ import { registerUser,loginUser, logoutUser, checkAuth  } from "../controllers/a
 import { loginAdmin, logoutAdmin } from "../controllers/admin.controller.js";
 import express from "express";
 import authenticateMiddleware  from "../middlewares/auth.middleware.js";
+import { verifyEmail } from "../controllers/auth.controller.js";
 
 const router = express.Router();
 
@@ -19,6 +20,8 @@ router.route("/user/logout")
         authenticateMiddleware,
         logoutUser
     );
+router.route("/verify-email").post(verifyEmail);
+
 
 router.route("/check")
     .get(

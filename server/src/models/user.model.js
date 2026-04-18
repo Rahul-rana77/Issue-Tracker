@@ -19,6 +19,16 @@ const userSchema = new mongoose.Schema({
         required: true,
         unique: true,
     },
+    isVerified: {
+        type: Boolean,
+        default: false,
+    },
+    emailVerificationCode: {
+        type: String,
+    },
+    phoneVerificationCode: {
+        type: String,
+    },
 }, { timestamps: true });
 
 const userModel = mongoose.model('User', userSchema);
