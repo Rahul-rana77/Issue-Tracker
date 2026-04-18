@@ -1,5 +1,4 @@
 import userModel from '../models/user.model.js';
-import adminModel from '../models/admin.model.js';
 import jwt from 'jsonwebtoken';
 
 const authenticateMiddleware = async (req, res, next) => {
@@ -19,7 +18,7 @@ const authenticateMiddleware = async (req, res, next) => {
 
     if (adminToken) {
       const decoded = jwt.verify(adminToken, process.env.JWT_SECRET);
-      const admin = await adminModel.findById(decoded.id);
+      const admin = await userModel.findById(decoded.id);
       if (!admin) {
         return res.status(401).json({ message: "Admin not found" }).redirect("/unauthorized");
       }

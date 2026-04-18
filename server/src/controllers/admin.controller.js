@@ -1,9 +1,9 @@
-import userModel from "../models/admin.model.js";
+import userModel from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 
 const loginAdmin = async (req, res) => {
-    const { email, code } = req.body;
+    const { email, password } = req.body;
     try {
         const admin = await userModel.findOne({ email });
         if (!admin) {

@@ -8,7 +8,7 @@ import AdminLogin from './pages/AdminLogin.jsx'
 import AdminIssueDetails from './pages/AdminIssueDetails.jsx'
 import SignUp from './pages/SignUp.jsx'
 import Unauthorized from './pages/Unauthorized.jsx'
-import OtpSubmission from './pages/OtpSubmission.jsx'
+import VerifyCredentials from './pages/VerifyCredentials.jsx'
 
 function App() {
 
@@ -24,7 +24,7 @@ function App() {
         <Route path="/admin/login" element={<AdminLogin />} />
         <Route path="/issue/admin/:id" element={<AdminIssueDetails />} />
         <Route path="/unauthorized" element={<Unauthorized />} />
-        <Route path="/otp-verification" element={<OtpSubmission />} />
+        <Route path="/verify/credentials" element={<VerifyCredentials />} />
       </Routes>
     </BrowserRouter>
   )

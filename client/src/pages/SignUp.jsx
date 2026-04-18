@@ -3,7 +3,6 @@ import "../styles/login.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
-import VerifyButton from "../components/VerifyButton"
 import { useState, useCallback } from "react";
 
 function SignUp() {
@@ -43,7 +42,7 @@ function SignUp() {
 
       console.log(response.data);
       localStorage.setItem("role", "user");
-      navigate('/home');
+      navigate('/verify/credentials');
     } catch (error) {
       if (error.response) {
         console.error("Error response:", error.response.data);
@@ -105,7 +104,6 @@ function SignUp() {
                   onChange={handleChange}
                   required
                 />
-                <VerifyButton phone={formData.phone} />
               </div>
               <label htmlFor="email">Email</label>
               <div className="verify-email">
@@ -117,7 +115,6 @@ function SignUp() {
                   onChange={handleChange}
                   required
                 />
-                <VerifyButton email={formData.email} />
               </div>
               <div className="form-group-pair">
                 <div className="form-col">

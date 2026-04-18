@@ -26,7 +26,7 @@ function Unauthorized() {
         </p>
 
         <div className="error-buttons">
-          <Link to="/user/login" className="error-btn">
+          <Link to="/" className="error-btn">
             Login
           </Link>
         </div>
