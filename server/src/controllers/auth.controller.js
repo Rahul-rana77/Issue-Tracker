@@ -1,8 +1,9 @@
 import userModel from "../models/user.model.js";
 import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
+import crypto from 'crypto';
 import { sendEmail } from "../services/email.service.js";
-import { generateOTP, getOtpHTML } from "../utils/otp.util.js";
+import { generateOTP, getOtpHTML, otpBody } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
     try {
@@ -16,7 +17,11 @@ const registerUser = async (req, res) => {
 
         const emailotp = generateOTP();
         const emailHtml = getOtpHTML(emailotp);
-        const hashedEmailOtp = await bcrypt.hash(emailotp, 8);
+        const hashedEmailOtp = await crypto.createHash('sha256').update(emailotp).digest('hex');
+
+        const phoneotp = generateOTP();
+        const phoneBody = otpBody(phoneotp);
+        const hashedPhoneOtp = await crypto.createHash('sha256').update(phoneotp).digest('hex');
 
         const User = await userModel.create({
             fullName,
@@ -24,9 +29,11 @@ const registerUser = async (req, res) => {
             phone,
             password: hashedPassword,
             emailVerificationCode: emailotp,
+            phoneVerificationCode: phoneotp,
         });
 
         await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
+        await createMessage(phoneBody, phone);
 
         res.status(201).json({ 
             message: "User registered successfully", 
@@ -37,6 +44,7 @@ const registerUser = async (req, res) => {
                 phone: User.phone,
                 isVerified: User.isVerified,
                 emailVerificationCode: User.emailVerificationCode,
+                phoneVerificationCode: User.phoneVerificationCode,
             },
          });
 
@@ -68,6 +76,27 @@ const verifyEmail = async (req, res) => {
 
          // Set a timeout to automatically verify the email after 10 minutes (600000 ms)
         setTimeout(verifyEmail, 600000);
+
+const verifyPhone = async (req, res) => {
+    try {
+        const { phoneotp } = req.body;
+        const user = await userModel.findOne({ 
+            phoneVerificationCode: phoneotp
+        }).lean();
+        if (!user) {
+            return res.status(400).json({ message: "Invalid OTP or expired OTP" });
+        }
+        if (user.phoneVerificationCode === phoneotp) {
+            user.isVerified = true;
+            user.phoneVerificationCode = undefined;
+            await user.save();
+            res.status(200).json({ message: "Phone number verified successfully" });
+        }
+    } catch (error) {
+        console.error("Error in verifyPhone:", error);
+        res.status(500).json({ error: error.message });
+    }
+};
 
 const loginUser = async (req, res) => {
     const { email, password } = req.body;

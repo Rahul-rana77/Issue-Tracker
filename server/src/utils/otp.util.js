@@ -12,3 +12,8 @@ export const getOtpHTML = (otp) => {
         </div>
     `;
 };
+
+export const otpBody = (otp) => {
+    return `Your UrbanFix verification code is ${otp}.
+This code will expire in 5 minutes. Do not share it with anyone.`;
+}

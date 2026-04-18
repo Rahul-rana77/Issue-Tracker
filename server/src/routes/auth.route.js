@@ -20,7 +20,8 @@ router.route("/user/logout")
         authenticateMiddleware,
         logoutUser
     );
-router.route("/user/verify-email").post(verifyEmail);
+router.route("/user/verify/email").post(verifyEmail);
+router.route("/user/verify/phone").post(verifyPhone);
 
 
 router.route("/check")
