@@ -83,7 +83,6 @@ function SignUp() {
                   placeholder="Username"
                   value={formData.username}
                   onChange={handleChange}
-                  required // Ensure username is mandatory
                 />
               <label htmlFor="phone">Phone</label>
               <div className="verify-phone">
