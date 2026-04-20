@@ -8,7 +8,7 @@ import { generateOTP, getOtpHTML, otpBody } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
     try {
-        const { firstName, lastName, email, password, phone } = req.body;
+        const { username, email, password, phone } = req.body;
         const existingUser = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
@@ -17,7 +17,7 @@ const registerUser = async (req, res) => {
             alert("All fields are required");
             return res.status(400).json({ message: "All fields are required" });
         }
-        if (password.length < 6&& password.length > 20&& !/\d/.test(password) && !/[!@#$%^&*]/.test(password)) {
+        if (password.length < 6 || password.length > 20 || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
             alert("Password must be 6-20 characters long and include at least one number and one special character");
             return res.status(400).json({ message: "Password must be 6-20 characters long and include at least one number and one special character" });
         }
@@ -26,7 +26,6 @@ const registerUser = async (req, res) => {
             alert("Username already exists");
             return res.status(400).json({ message: "Username already exists" });
         }
-
 
         const hashedPassword = await bcrypt.hash(password, 8);
 
