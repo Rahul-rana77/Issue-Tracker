@@ -27,7 +27,6 @@ function SignUp() {
    const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setMessage("");
 
 
     const { username, phone, email, password, confirm } = formData;
@@ -84,7 +83,7 @@ function SignUp() {
                   placeholder="Username"
                   value={formData.username}
                   onChange={handleChange}
-                  required
+                  required // Ensure username is mandatory
                 />
               <label htmlFor="phone">Phone</label>
               <div className="verify-phone">
