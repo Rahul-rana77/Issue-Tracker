@@ -16,7 +16,6 @@ function SignUp() {
   });
 
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState("");
 
   const handleChange = (e) => {
     setFormData({
@@ -61,8 +60,10 @@ function SignUp() {
         console.error("Error message:", error.message);
         alert("Registration failed: An unexpected error occurred");
       }
-    }
-  }, [formData, navigate]);
+    } finally {
+        setLoading(false);
+      }
+  };
 
   return (
     <div className="page">
