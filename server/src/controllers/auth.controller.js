@@ -13,6 +13,20 @@ const registerUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
+        if (!username || !email || !password || !phone) {
+            alert("All fields are required");
+            return res.status(400).json({ message: "All fields are required" });
+        }
+        if (password.length < 6&& password.length > 20&& !/\d/.test(password) && !/[!@#$%^&*]/.test(password)) {
+            alert("Password must be 6-20 characters long and include at least one number and one special character");
+            return res.status(400).json({ message: "Password must be 6-20 characters long and include at least one number and one special character" });
+        }
+        const existingUsername = await userModel.findOne({ username }).lean();
+        if (existingUsername) {
+            alert("Username already exists");
+            return res.status(400).json({ message: "Username already exists" });
+        }
+
 
         const hashedPassword = await bcrypt.hash(password, 8);
 
@@ -25,8 +39,7 @@ const registerUser = async (req, res) => {
         const hashedPhoneOtp = await crypto.createHash('sha256').update(phoneotp).digest('hex');
 
         const User = await userModel.create({
-            firstName,
-            lastName,
+            username,
             email,
             phone,
             password: hashedPassword,
@@ -41,8 +54,7 @@ const registerUser = async (req, res) => {
             message: "User registered successfully", 
             user: {
                 _id: User._id,
-                firstName: User.firstName,
-                lastName: User.lastName,
+                username: User.username,
                 email: User.email,
                 phone: User.phone,
                 isVerified: User.isVerified,

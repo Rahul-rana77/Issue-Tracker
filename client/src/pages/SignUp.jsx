@@ -3,13 +3,12 @@ import "../styles/login.css"
 import axios from "axios"
 import { useNavigate } from "react-router-dom"
 import Navbar from "../components/Navbar"
-import { useState, useCallback } from "react";
+import { useState, useCallback, use } from "react";
 
 function SignUp() {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    username: "",
     phone: "",
     email: "",
     password: "",
@@ -24,7 +23,7 @@ function SignUp() {
   const handleSubmit = useCallback(async (e) => {
     e.preventDefault();
 
-    const { firstName, lastName, phone, email, password, confirm } = formData;
+    const { username, phone, email, password, confirm } = formData;
     if (password !== confirm) {
       alert("Passwords do not match");
       return;
@@ -32,8 +31,7 @@ function SignUp() {
 
     try {
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/user/register`, {
-        firstName,
-        lastName,
+        username,
         phone,
         email,
         password,
@@ -70,31 +68,15 @@ function SignUp() {
 
           <form className="login-form" onSubmit={handleSubmit}>
             <div className="form-group">
-              <div className="form-group-pair">
-              <div className="form-col">
-              <label htmlFor="firstName">First Name</label>
+              <label htmlFor="username">Username</label>
                 <input
                   type="text"
-                  name="firstName"
-                  placeholder="First Name"
-                  value={formData.firstName}
+                  name="username"
+                  placeholder="Username"
+                  value={formData.username}
                   onChange={handleChange}
                   required
                 />
-                </div>
-
-              <div className="form-col">
-              <label htmlFor="lastName">Last Name</label>
-                <input
-                  type="text"
-                  name="lastName"
-                  placeholder="Last Name"
-                  value={formData.lastName}
-                  onChange={handleChange}
-                  required
-                />
-                </div>
-              </div>
               <label htmlFor="phone">Phone</label>
               <div className="verify-phone">
                 <input
