@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { sendEmail } from "../services/email.service.js";
 import { createMessage } from "../services/sms.service.js";
-import { generateOTP, getOtpHTML, otpBody } from "../utils/otp.util.js";
+import { generateOTP, getOtpHTML } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
     try {
@@ -33,7 +33,6 @@ const registerUser = async (req, res) => {
         const hashedEmailOtp = await crypto.createHash('sha256').update(emailotp).digest('hex');
 
         const phoneotp = generateOTP();
-        const phoneBody = otpBody(phoneotp);
         const hashedPhoneOtp = await crypto.createHash('sha256').update(phoneotp).digest('hex');
 
         const User = await userModel.create({
@@ -45,8 +44,16 @@ const registerUser = async (req, res) => {
             phoneVerificationCode: hashedPhoneOtp,
         });
 
-        await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
-        await createMessage(phoneBody, phone);
+        try{
+            await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
+            await createMessage(`Your UrbanFix verification code is ${phoneotp}.`, phone);
+
+        } catch (error) {
+            console.error("Error sending verification messages:", error);
+             // Rollback user creation if message sending fails
+            await userModel.findByIdAndDelete(User._id);
+             return res.status(500).json({ message: "Failed to send verification messages. Please try again." });
+        }
 
         res.status(201).json({ 
             message: "User registered successfully", 
@@ -56,8 +63,6 @@ const registerUser = async (req, res) => {
                 email: User.email,
                 phone: User.phone,
                 isVerified: User.isVerified,
-                emailVerificationCode: User.emailVerificationCode,
-                phoneVerificationCode: User.phoneVerificationCode,
             },
          });
 
