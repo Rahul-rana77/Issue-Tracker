@@ -9,7 +9,7 @@ import { generateOTP, getOtpHTML, otpBody } from "../utils/otp.util.js";
 const registerUser = async (req, res) => {
     try {
         const { fullName, email, password, phone } = req.body;
-        const existingUser = await userModel.findOne({ email }); // Use lean() for faster read-only queries
+        const existingUser = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
