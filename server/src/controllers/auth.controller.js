@@ -30,18 +30,16 @@ const registerUser = async (req, res) => {
 
         const emailotp = generateOTP();
         const emailHtml = getOtpHTML(emailotp);
-        const hashedEmailOtp = await crypto.createHash('sha256').update(emailotp).digest('hex');
 
         const phoneotp = generateOTP();
-        const hashedPhoneOtp = await crypto.createHash('sha256').update(phoneotp).digest('hex');
 
         const User = await userModel.create({
             username,
             email,
             phone,
             password: hashedPassword,
-            emailVerificationCode: hashedEmailOtp,
-            phoneVerificationCode: hashedPhoneOtp,
+            emailVerificationCode: emailotp,
+            phoneVerificationCode: phoneotp,
         });
 
         try{
