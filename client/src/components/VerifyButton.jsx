@@ -12,7 +12,7 @@ const VerifyButton = ({ otp }) => {
 
     try {
       const response = await axios.post(
-        `${import.meta.env.VITE_BASE_URL}/api/auth/verify/email`,
+        `${import.meta.env.VITE_BASE_URL}/api/auth/user/verify/email`,
         { otp },
         { withCredentials: true }
       );
