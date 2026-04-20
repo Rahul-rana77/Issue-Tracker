@@ -3,7 +3,6 @@ import bcrypt from 'bcryptjs';
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
 import { sendEmail } from "../services/email.service.js";
-import { createMessage } from "../services/sms.service.js";
 import { generateOTP, getOtpHTML } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
@@ -31,15 +30,12 @@ const registerUser = async (req, res) => {
         const emailotp = generateOTP();
         const emailHtml = getOtpHTML(emailotp);
 
-        const phoneotp = generateOTP();
-
         const User = await userModel.create({
             username,
             email,
             phone,
             password: hashedPassword,
             emailVerificationCode: emailotp,
-            phoneVerificationCode: phoneotp,
         });
 
         try {
@@ -48,19 +44,6 @@ const registerUser = async (req, res) => {
         } catch (emailError) {
             console.error("Failed to send email:", emailError);
             return res.status(500).json({ message: "Failed to send verification email. Please try again." });
-        }
-
-        try {
-            await createMessage(`Your UrbanFix verification code is ${phoneotp}.`, phone);
-            console.log("SMS sent successfully to:", phone);
-        } catch (smsError) {
-            console.error("Failed to send SMS:", smsError);
-
-            return res.status(500).json({
-                message: smsError.message,
-                code: smsError.code,
-                moreInfo: smsError.moreInfo
-             });
         }
 
         res.status(201).json({ 
