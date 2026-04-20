@@ -70,7 +70,6 @@ const verifyEmail = async (req, res) => {
                    emailVerificationCode: emailotp
                  });
                 if (!user) {
-                    alert("Invalid OTP or expired OTP");
                     return res.status(400).json({ message: "Invalid OTP or expired OTP" });
                 }
                 if (user.emailVerificationCode === emailotp) {
