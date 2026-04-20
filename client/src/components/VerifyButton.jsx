@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import '../styles/verifyButton.css';
 
 const VerifyButton = ({ otp }) => {
   const [loading, setLoading] = useState(false);
