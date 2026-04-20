@@ -8,7 +8,7 @@ import { generateOTP, getOtpHTML, otpBody } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
     try {
-        const { fullName, email, password, phone } = req.body;
+        const { firstName, lastName, email, password, phone } = req.body;
         const existingUser = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
@@ -25,7 +25,8 @@ const registerUser = async (req, res) => {
         const hashedPhoneOtp = await crypto.createHash('sha256').update(phoneotp).digest('hex');
 
         const User = await userModel.create({
-            fullName,
+            firstName,
+            lastName,
             email,
             phone,
             password: hashedPassword,
@@ -40,7 +41,8 @@ const registerUser = async (req, res) => {
             message: "User registered successfully", 
             user: {
                 _id: User._id,
-                fullName: User.fullName,
+                firstName: User.firstName,
+                lastName: User.lastName,
                 email: User.email,
                 phone: User.phone,
                 isVerified: User.isVerified,
@@ -135,7 +137,8 @@ const loginUser = async (req, res) => {
             message: "Login successful", 
             user: {
                 _id: user._id,
-                fullName: user.fullName,
+                firstName: user.firstName,
+                lastName: user.lastName,
                 email: user.email,
                 phone: user.phone,
                 isVerified: user.isVerified,
