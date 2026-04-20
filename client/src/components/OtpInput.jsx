@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import '../styles/otpInput.css';
 
 const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
-  const [emailotp, setEmailotp] = useState(new Array(length).fill(""));
+  const [emailotp, setEmailOtp] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
 
   useEffect(() => {
