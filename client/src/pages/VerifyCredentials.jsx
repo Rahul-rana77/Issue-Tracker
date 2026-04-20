@@ -1,33 +1,44 @@
-import React from 'react'
+import React, { useState } from 'react';
 
 const VerifyCredentials = () => {
-  return (
-    <div style={{ textAlign: "center" }}>
-      <h2>Enter OTP</h2>
+  const [emailOtp, setEmailOtp] = useState('');
+  const [phoneOtp, setPhoneOtp] = useState('');
 
-      <div style={{ display: "flex", justifyContent: "center", gap: "10px" }}>
-        {otp.map((data, index) => (
-          <input
-            key={index}
-            type="text"
-            maxLength="1"
-            value={data}
-            onChange={(e) => handleChange(e.target, index)}
-            style={{
-              width: "40px",
-              height: "40px",
-              fontSize: "20px",
-              textAlign: "center",
-            }}
-          />
-        ))}
+  const handleVerify = () => {
+    console.log('Email OTP:', emailOtp);
+    console.log('Phone OTP:', phoneOtp);
+    // Add verification logic here
+  };
+
+  return (
+    <div style={{ textAlign: 'center' }}>
+      <h2>Verify Your Credentials</h2>
+
+      <div>
+        <label>Email OTP:</label>
+        <input
+          type="text"
+          value={emailOtp}
+          onChange={(e) => setEmailOtp(e.target.value)}
+          placeholder="Enter email OTP"
+        />
       </div>
 
-      <button onClick={handleSubmit} style={{ marginTop: "20px" }}>
-        Verify OTP
-      </button>
-    </div> 
-  )
-}
+      <div>
+        <label>Phone OTP:</label>
+        <input
+          type="text"
+          value={phoneOtp}
+          onChange={(e) => setPhoneOtp(e.target.value)}
+          placeholder="Enter phone OTP"
+        />
+      </div>
 
-export default VerifyCredentials
+      <button onClick={handleVerify} style={{ marginTop: '20px' }}>
+        Verify
+      </button>
+    </div>
+  );
+};
+
+export default VerifyCredentials;
