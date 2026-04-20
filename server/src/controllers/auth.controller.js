@@ -57,9 +57,9 @@ const registerUser = async (req, res) => {
             console.error("Failed to send SMS:", smsError);
 
             return res.status(500).json({
-                message: error.message,
-                code: error.code,
-                moreInfo: error.moreInfo
+                message: smsError.message,
+                code: smsError.code,
+                moreInfo: smsError.moreInfo
              });
         }
 
