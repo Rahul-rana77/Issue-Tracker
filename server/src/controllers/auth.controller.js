@@ -42,15 +42,20 @@ const registerUser = async (req, res) => {
             phoneVerificationCode: phoneotp,
         });
 
-        try{
+        try {
             await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
-            await createMessage(`Your UrbanFix verification code is ${phoneotp}.`, phone);
+            console.log("Email sent successfully to:", email);
+        } catch (emailError) {
+            console.error("Failed to send email:", emailError);
+            return res.status(500).json({ message: "Failed to send verification email. Please try again." });
+        }
 
-        } catch (error) {
-            console.error("Error sending verification messages:", error);
-             // Rollback user creation if message sending fails
-            await userModel.findByIdAndDelete(User._id);
-             return res.status(500).json({ message: "Failed to send verification messages. Please try again." });
+        try {
+            await createMessage(`Your UrbanFix verification code is ${phoneotp}.`, phone);
+            console.log("SMS sent successfully to:", phone);
+        } catch (smsError) {
+            console.error("Failed to send SMS:", smsError);
+            return res.status(500).json({ message: "Failed to send verification SMS. Please try again." });
         }
 
         res.status(201).json({ 
