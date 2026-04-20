@@ -2,7 +2,7 @@ import {useEffect, useRef, useState} from "react";
 import '../styles/otpInput.css';
 
 const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
-  const [emailOtp, setEmailOtp] = useState(new Array(length).fill(""));
+  const [emailotp, setEmailotp] = useState(new Array(length).fill(""));
   const inputRefs = useRef([]);
 
   useEffect(() => {
@@ -15,10 +15,10 @@ const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
     const value = e.target.value;
     if (isNaN(value)) return;
 
-    const newOtp = [...emailOtp];
+    const newOtp = [...emailotp];
     // allow only one input
     newOtp[index] = value.substring(value.length - 1);
-    setEmailOtp(newOtp);
+    setEmailotp(newOtp);
 
     // submit trigger
     const combinedOtp = newOtp.join("");
@@ -34,15 +34,15 @@ const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
     inputRefs.current[index].setSelectionRange(1, 1);
 
     // optional
-    if (index > 0 && !emailOtp[index - 1]) {
-      inputRefs.current[emailOtp.indexOf("")].focus();
+    if (index > 0 && !emailotp[index - 1]) {
+      inputRefs.current[emailotp.indexOf("")].focus();
     }
   };
 
   const handleKeyDown = (index, e) => {
     if (
       e.key === "Backspace" &&
-      !emailOtp[index] &&
+      !emailotp[index] &&
       index > 0 &&
       inputRefs.current[index - 1]
     ) {
@@ -53,7 +53,7 @@ const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
 
   return (
     <div>
-      {emailOtp.map((value, index) => {
+      {emailotp.map((value, index) => {
         return (
           <input
             key={index}
