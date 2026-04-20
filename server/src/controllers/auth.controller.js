@@ -55,7 +55,12 @@ const registerUser = async (req, res) => {
             console.log("SMS sent successfully to:", phone);
         } catch (smsError) {
             console.error("Failed to send SMS:", smsError);
-            return res.status(500).json({ message: "Failed to send verification SMS. Please try again." });
+
+            return res.status(500).json({
+                message: error.message,
+                code: error.code,
+                moreInfo: error.moreInfo
+             });
         }
 
         res.status(201).json({ 
