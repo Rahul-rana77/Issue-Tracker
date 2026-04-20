@@ -14,16 +14,13 @@ const registerUser = async (req, res) => {
             return res.status(400).json({ message: "User already exists" });
         }
         if (!username || !email || !password || !phone) {
-            alert("All fields are required");
             return res.status(400).json({ message: "All fields are required" });
         }
         if (password.length < 6 || password.length > 20 || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
-            alert("Password must be 6-20 characters long and include at least one number and one special character");
             return res.status(400).json({ message: "Password must be 6-20 characters long and include at least one number and one special character" });
         }
         const existingUsername = await userModel.findOne({ username }).lean();
         if (existingUsername) {
-            alert("Username already exists");
             return res.status(400).json({ message: "Username already exists" });
         }
 
