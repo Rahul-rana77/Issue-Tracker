@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/verifyButton.css';
 
-const VerifyButton = ({ otp }) => {
+const VerifyButton = ({ emailotp }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
 
@@ -13,7 +13,7 @@ const VerifyButton = ({ otp }) => {
     try {
       const response = await axios.post(
         `${import.meta.env.VITE_BASE_URL}/api/auth/user/verify/email`,
-        { otp },
+        { emailotp },
         { withCredentials: true }
       );
 
