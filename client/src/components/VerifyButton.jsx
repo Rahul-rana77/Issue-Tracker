@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import '../styles/verifyButton.css';
+import '../styles/verify-button.css';
 
 const VerifyButton = ({ emailotp }) => {
   const [loading, setLoading] = useState(false);
@@ -31,7 +31,7 @@ const VerifyButton = ({ emailotp }) => {
 
   return (
     <div>
-      <button onClick={handleVerify} disabled={loading}>
+      <button className='verify-btn' onClick={handleVerify} disabled={loading}>
         {loading ? "Verifying..." : "Verify"}
       </button>
       {message && <p>{message}</p>}

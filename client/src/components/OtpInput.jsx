@@ -1,5 +1,5 @@
 import {useEffect, useRef, useState} from "react";
-import '../styles/otpInput.css';
+import '../styles/otpinput.css';
 
 const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
   const [emailotp, setEmailOtp] = useState(new Array(length).fill(""));
