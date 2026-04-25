@@ -10,7 +10,7 @@ const VerifyCredentials = () => {
   };
 
   return (
-    <div>
+    <div className='container'>
       <h2>Verification Sent!</h2>
       <p>Please check your email for the OTP to verify your account.</p>
       <OtpInput onOtpSubmit={handleOtpSubmit} />
