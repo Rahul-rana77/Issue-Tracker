@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import OtpInput from '../components/OtpInput.jsx'
 import VerifyButton from '../components/VerifyButton.jsx'
+import '../styles/verify-credentials.css';
 
 const VerifyCredentials = () => {
   const [emailotp, setEmailOtp] = useState("");

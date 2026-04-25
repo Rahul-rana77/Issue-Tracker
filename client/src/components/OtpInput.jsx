@@ -18,7 +18,8 @@ const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
     const newOtp = [...emailotp];
     // allow only one input
     newOtp[index] = value.substring(value.length - 1);
-    setEmailotp(newOtp);
+    console.log('Updated OTP:', newOtp); // Debugging: Log the updated OTP
+    setEmailOtp(newOtp);
 
     // submit trigger
     const combinedOtp = newOtp.join("");
