@@ -54,7 +54,7 @@ const OtpInput = ({length = 6, onOtpSubmit = () => {}}) => {
 
   return (
     <div>
-      {emailotp.map((value, index) => {
+      {combinedOtp.map((value, index) => {
         return (
           <input
             key={index}

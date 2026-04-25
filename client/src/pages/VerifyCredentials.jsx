@@ -6,8 +6,8 @@ import '../styles/verify-credentials.css';
 const VerifyCredentials = () => {
   const [emailotp, setEmailOtp] = useState("");
 
-  const handleOtpSubmit = (submittedOtp) => {
-    setEmailOtp(submittedOtp);
+  const handleOtpSubmit = (combinedOtp) => {
+    setEmailOtp(combinedOtp);
   };
 
   return (
