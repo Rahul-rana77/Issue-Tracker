@@ -59,7 +59,7 @@ const registerUser = async (req, res) => {
         }
 
         // Create user
-        const user = await userModel.create({
+        const User = await userModel.create({
             username,
             email,
             phone,
@@ -69,7 +69,7 @@ const registerUser = async (req, res) => {
 
         // Generate token
         const token = jwt.sign(
-            { id: user._id },
+            { id: User._id },
             process.env.JWT_SECRET,
             { expiresIn: "1h" }
         );
@@ -86,11 +86,11 @@ const registerUser = async (req, res) => {
         res.status(201).json({
             message: "User registered successfully",
             user: {
-                _id: user._id,
-                username: user.username,
-                email: user.email,
-                phone: user.phone,
-                isVerified: user.isVerified,
+                _id: User._id,
+                username: User.username,
+                email: User.email,
+                phone: User.phone,
+                isVerified: User.isVerified,
             }
         });
 
@@ -107,16 +107,16 @@ const registerUser = async (req, res) => {
 const verifyEmail = async (req, res) => {
             try {
                 const { emailotp } = req.body;
-                const user = await userModel.findOne({ 
+                const User = await userModel.findOne({ 
                    emailVerificationCode: emailotp
                  });
-                if (!user) {
+                if (!User) {
                     return res.status(400).json({ message: "Invalid OTP or expired OTP" });
                 }
-                if (user.emailVerificationCode === emailotp) {
-                    user.isVerified = true;
-                    user.emailVerificationCode = undefined;
-                    await user.save();
+                if (User.emailVerificationCode === emailotp) {
+                    User.isVerified = true;
+                    User.emailVerificationCode = undefined;
+                    await User.save();
                     res.status(200).json({ message: "Email verified successfully" });
                 } 
             } catch (error) {
@@ -131,17 +131,17 @@ const verifyEmail = async (req, res) => {
 const verifyPhone = async (req, res) => {
     try {
         const { phoneotp } = req.body;
-        const user = await userModel.findOne({ 
+        const User = await userModel.findOne({ 
             phoneVerificationCode: phoneotp
         });
-        if (!user) {
+        if (!User) {
             alert("Invalid OTP or expired OTP");
             return res.status(400).json({ message: "Invalid OTP or expired OTP" });
         }
-        if (user.phoneVerificationCode === phoneotp) {
-            user.isVerified = true;
-            user.phoneVerificationCode = undefined;
-            await user.save();
+        if (User.phoneVerificationCode === phoneotp) {
+            User.isVerified = true;
+            User.phoneVerificationCode = undefined;
+            await User.save();
             res.status(200).json({ message: "Phone number verified successfully" });
         }
     } catch (error) {
@@ -155,22 +155,22 @@ setTimeout(verifyPhone, 600000);
 const loginUser = async (req, res) => {
     const { email, password } = req.body;
     try {
-        const user = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
-        if (!user) {
+        const User = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
+        if (!User) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
-        if (!user.isVerified) {
+        if (!User.isVerified) {
             return res.status(403).json({ message: "Account not verified. Please verify your email or phone." });
         }
 
-        const isPasswordValid = await bcrypt.compare(password, user.password);
+        const isPasswordValid = await bcrypt.compare(password, User.password);
         if (!isPasswordValid) {
             return res.status(400).json({ message: "Invalid credentials" });
         }
 
         const token = jwt.sign({
-            id: user._id,
+            id: User._id,
         }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
 
         res.cookie("token", token, {
@@ -182,12 +182,12 @@ const loginUser = async (req, res) => {
         res.status(200).json({ 
             message: "Login successful", 
             user: {
-                _id: user._id,
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                phone: user.phone,
-                isVerified: user.isVerified,
+                _id: User._id,
+                firstName: User.firstName,
+                lastName: User.lastName,
+                email: User.email,
+                phone: User.phone,
+                isVerified: User.isVerified,
             },
         });
     } catch (error) {
