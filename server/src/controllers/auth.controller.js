@@ -67,6 +67,17 @@ const registerUser = async (req, res) => {
             httpOnly: true
         });
 
+        sendEmail(
+            email,
+            "Verify Your Email",
+            `Your OTP is: ${emailotp}`,
+            emailHtml
+        ).then(() => {
+            console.log("Email sent");
+        }).catch((error) => {
+            console.log("Email error:", error);
+        });
+
         // SEND RESPONSE IMMEDIATELY
         res.status(201).json({
             message: "User registered successfully",
@@ -77,18 +88,6 @@ const registerUser = async (req, res) => {
                 phone: user.phone,
                 isVerified: user.isVerified,
             }
-        });
-
-        // Send email AFTER response
-        sendEmail(
-            email,
-            "Verify Your Email",
-            `Your OTP is: ${emailotp}`,
-            emailHtml
-        ).then(() => {
-            console.log("Email sent");
-        }).catch((error) => {
-            console.log("Email error:", error);
         });
 
     } catch (error) {
