@@ -12,7 +12,7 @@ const registerUser = async (req, res) => {
         if (existingUser) {
             return res.status(400).json({ message: "User already exists" });
         }
-        
+
         if (!username || !email || !password || !phone) {
             return res.status(400).json({ message: "All fields are required" });
         }
@@ -34,11 +34,8 @@ const registerUser = async (req, res) => {
             password: hashedPassword,
             emailVerificationCode: emailotp,
         });
-
-        try {
-            await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
-            console.log("Email sent successfully to:", email);
-             const token = jwt.sign({
+        
+        const token = jwt.sign({
                         id: user._id,
                     }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
 
@@ -47,6 +44,10 @@ const registerUser = async (req, res) => {
                         sameSite: 'None',
                         httpOnly: true // Add httpOnly for better security
                     });
+
+        try {
+            await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
+            console.log("Email sent successfully to:", email);
         } catch (emailError) {
             console.error("Failed to send email:", emailError);
             return res.status(500).json({ message: "Failed to send verification email. Please try again." });
