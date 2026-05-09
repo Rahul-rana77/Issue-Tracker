@@ -6,8 +6,8 @@ import '../styles/verify-credentials.css';
 const VerifyCredentials = () => {
   const [emailotp, setEmailOtp] = useState("");
 
-  const handleOtpSubmit = (combinedOtp) => {
-    setEmailOtp(combinedOtp);
+  const handleOtpSubmit = (value) => {
+    setEmailOtp(value);
   };
 
   return (
@@ -15,7 +15,7 @@ const VerifyCredentials = () => {
       <h2>Verification Sent!</h2>
       <p>Please check your email for the OTP to verify your account.</p>
       <OtpInput onOtpSubmit={handleOtpSubmit} />
-      <VerifyButton otp={emailotp} />
+      <VerifyButton emailotp={emailotp} />
     </div>
   )
 }

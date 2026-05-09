@@ -7,6 +7,11 @@ const VerifyButton = ({ emailotp }) => {
   const [message, setMessage] = useState("");
 
   const handleVerify = async () => {
+    if (!emailotp) {
+      setMessage("Please enter the OTP.");
+      return;
+    } 
+
     setLoading(true);
     setMessage("");
 
@@ -31,10 +36,16 @@ const VerifyButton = ({ emailotp }) => {
 
   return (
     <div>
-      <button className='verify-btn' onClick={handleVerify} disabled={loading}>
+      <button
+        className='verify-btn' 
+        onClick={handleVerify} 
+        disabled={loading}
+      >
         {loading ? "Verifying..." : "Verify"}
       </button>
+
       {message && <p>{message}</p>}
+      
     </div>
   );
 };
