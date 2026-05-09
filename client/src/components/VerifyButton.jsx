@@ -1,10 +1,12 @@
 import React, { useState } from 'react';
 import axios from 'axios';
 import '../styles/verify-button.css';
+import { useNavigate } from 'react-router-dom';
 
 const VerifyButton = ({ emailotp }) => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState("");
+  const navigate = useNavigate();
 
   const handleVerify = async () => {
     if (!emailotp) {
@@ -23,6 +25,7 @@ const VerifyButton = ({ emailotp }) => {
       );
 
       setMessage("Verification successful!");
+      navigate('/home');
     } catch (error) {
       if (error.response) {
         setMessage(error.response.data.message || "Verification failed.");
