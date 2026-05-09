@@ -34,16 +34,6 @@ const registerUser = async (req, res) => {
             password: hashedPassword,
             emailVerificationCode: emailotp,
         });
-        
-        const token = jwt.sign({
-                        id: user._id,
-                    }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
-
-                    res.cookie("token", token, {
-                        secure: true,
-                        sameSite: 'None',
-                        httpOnly: true // Add httpOnly for better security
-                    });
 
         try {
             await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
@@ -52,6 +42,16 @@ const registerUser = async (req, res) => {
             console.error("Failed to send email:", emailError);
             return res.status(500).json({ message: "Failed to send verification email. Please try again." });
         }
+
+        const token = jwt.sign({
+                        id: user._id,
+                    }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
+
+                    res.cookie("token", token, {
+                        secure: true,
+                        sameSite: 'None',
+                        httpOnly: true // Add httpOnly for better security
+                });
 
         res.status(201).json({ 
             message: "User registered successfully", 
@@ -84,16 +84,6 @@ const verifyEmail = async (req, res) => {
                     user.emailVerificationCode = undefined;
                     await user.save();
                     res.status(200).json({ message: "Email verified successfully" });
-
-                    const token = jwt.sign({
-                        id: user._id,
-                    }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
-
-                    res.cookie("token", token, {
-                        secure: true,
-                        sameSite: 'None',
-                        httpOnly: true // Add httpOnly for better security
-                });
                 } 
             } catch (error) {
                 console.error("Error in verifyEmail:", error);
