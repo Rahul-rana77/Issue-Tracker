@@ -6,28 +6,46 @@ import { sendEmail } from "../services/email.service.js";
 import { generateOTP, getOtpHTML } from "../utils/otp.util.js";
 
 const registerUser = async (req, res) => {
+
     try {
+
         const { username, email, password, phone } = req.body;
-        const existingUser = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
-        if (existingUser) {
-            return res.status(400).json({ message: "User already exists" });
-        }
 
+        // Validate first
         if (!username || !email || !password || !phone) {
-            return res.status(400).json({ message: "All fields are required" });
+            return res.status(400).json({
+                message: "All fields are required"
+            });
         }
 
-        const existingUsername = await userModel.findOne({ username }).lean();
+        // Run both checks together
+        const [existingEmail, existingUsername] = await Promise.all([
+            userModel.findOne({ email }).lean(),
+            userModel.findOne({ username }).lean()
+        ]);
+
+        if (existingEmail) {
+            return res.status(400).json({
+                message: "User already exists"
+            });
+        }
+
         if (existingUsername) {
-            return res.status(400).json({ message: "Username already exists" });
+            return res.status(400).json({
+                message: "Username already exists"
+            });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 8);
+        // Faster hashing
+        const hashedPassword = await bcrypt.hash(password, 6);
 
         const emailotp = generateOTP();
+
+        // Create HTML only once
         const emailHtml = getOtpHTML(emailotp);
 
-        const User = await userModel.create({
+        // Create user
+        const user = await userModel.create({
             username,
             email,
             phone,
@@ -35,38 +53,51 @@ const registerUser = async (req, res) => {
             emailVerificationCode: emailotp,
         });
 
-        try {
-            await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
-            console.log("Email sent successfully to:", email);
-        } catch (emailError) {
-            console.error("Failed to send email:", emailError);
-            return res.status(500).json({ message: "Failed to send verification email. Please try again." });
-        }
+        // Generate token
+        const token = jwt.sign(
+            { id: user._id },
+            process.env.JWT_SECRET,
+            { expiresIn: "1h" }
+        );
 
-        const token = jwt.sign({
-                        id: User._id,
-                    }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
+        // Cookie
+        res.cookie("token", token, {
+            secure: process.env.NODE_ENV === "production",
+            sameSite: "None",
+            httpOnly: true
+        });
 
-                    res.cookie("token", token, {
-                        secure: true,
-                        sameSite: 'None',
-                        httpOnly: true // Add httpOnly for better security
-                });
-
-        res.status(201).json({ 
-            message: "User registered successfully", 
+        // SEND RESPONSE IMMEDIATELY
+        res.status(201).json({
+            message: "User registered successfully",
             user: {
-                _id: User._id,
-                username: User.username,
-                email: User.email,
-                phone: User.phone,
-                isVerified: User.isVerified,
-            },
-         });
+                _id: user._id,
+                username: user.username,
+                email: user.email,
+                phone: user.phone,
+                isVerified: user.isVerified,
+            }
+        });
+
+        // Send email AFTER response
+        sendEmail(
+            email,
+            "Verify Your Email",
+            `Your OTP is: ${emailotp}`,
+            emailHtml
+        ).then(() => {
+            console.log("Email sent");
+        }).catch((error) => {
+            console.log("Email error:", error);
+        });
 
     } catch (error) {
-        console.error("Error in registerUser:", error);
-        res.status(500).json({ error: error.message });
+
+        console.error("Register Error:", error);
+
+        res.status(500).json({
+            error: error.message
+        });
     }
 };
 
