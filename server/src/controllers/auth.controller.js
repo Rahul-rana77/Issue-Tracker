@@ -8,22 +8,21 @@ import { generateOTP, getOtpHTML } from "../utils/otp.util.js";
 const registerUser = async (req, res) => {
     try {
         const { username, email, password, phone } = req.body;
-
+        const existingUser = await userModel.findOne({ email }).lean(); // Use lean() for faster read-only queries
+        if (existingUser) {
+            return res.status(400).json({ message: "User already exists" });
+        }
+        
         if (!username || !email || !password || !phone) {
             return res.status(400).json({ message: "All fields are required" });
         }
 
-        const existingUser = await userModel.findOne({ $or: [{ email }, { username }] }).lean(); // Combine queries for efficiency
-        if (existingUser) {
-            const message = existingUser.email === email ? "User already exists" : "Username already exists";
-            return res.status(400).json({ message });
+        const existingUsername = await userModel.findOne({ username }).lean();
+        if (existingUsername) {
+            return res.status(400).json({ message: "Username already exists" });
         }
 
-        if (password.length < 6 || password.length > 20 || !/\d/.test(password) || !/[!@#$%^&*]/.test(password)) {
-            return res.status(400).json({ message: "Password must be 6-20 characters long and include at least one number and one special character" });
-        }
-
-        const hashedPassword = await bcrypt.hash(password, 6); // Reduce bcrypt rounds for faster hashing
+        const hashedPassword = await bcrypt.hash(password, 8);
 
         const emailotp = generateOTP();
         const emailHtml = getOtpHTML(emailotp);
@@ -36,11 +35,10 @@ const registerUser = async (req, res) => {
             emailVerificationCode: emailotp,
         });
 
-        sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml).catch((emailError) => {
-            console.error("Failed to send email:", emailError);
-        }); // Make email sending non-blocking
-
-         const token = jwt.sign({
+        try {
+            await sendEmail(email, "Verify Your Email", `Your OTP is: ${emailotp}`, emailHtml);
+            console.log("Email sent successfully to:", email);
+             const token = jwt.sign({
                         id: user._id,
                     }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
 
@@ -49,6 +47,10 @@ const registerUser = async (req, res) => {
                         sameSite: 'None',
                         httpOnly: true // Add httpOnly for better security
                     });
+        } catch (emailError) {
+            console.error("Failed to send email:", emailError);
+            return res.status(500).json({ message: "Failed to send verification email. Please try again." });
+        }
 
         res.status(201).json({ 
             message: "User registered successfully", 
@@ -59,11 +61,11 @@ const registerUser = async (req, res) => {
                 phone: User.phone,
                 isVerified: User.isVerified,
             },
-        });
+         });
 
     } catch (error) {
         console.error("Error in registerUser:", error);
-        res.status(500).json({ message: "Server error" });
+        res.status(500).json({ error: error.message });
     }
 };
 
@@ -82,6 +84,15 @@ const verifyEmail = async (req, res) => {
                     await user.save();
                     res.status(200).json({ message: "Email verified successfully" });
 
+                    const token = jwt.sign({
+                        id: user._id,
+                    }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
+
+                    res.cookie("token", token, {
+                        secure: true,
+                        sameSite: 'None',
+                        httpOnly: true // Add httpOnly for better security
+                });
                 } 
             } catch (error) {
                 console.error("Error in verifyEmail:", error);
