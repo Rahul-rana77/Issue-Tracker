@@ -24,11 +24,11 @@ transporter.verify((error, success) => {
 export const sendEmail = async (to, subject, text, html) => {
   try {
     const info = await transporter.sendMail({
-      from: `"UrbanFix" <${process.env.GOOGLE_USER_ID}>`, // sender address
-      to, // list of receivers
-      subject, // Subject line
-      text, // plain text body
-      html, // html body
+      from: `"UrbanFix" <${process.env.GOOGLE_USER_ID}>`, 
+      to, 
+      subject, 
+      text, 
+      html, 
     });
 
     console.log('Message sent: %s', info.messageId);
