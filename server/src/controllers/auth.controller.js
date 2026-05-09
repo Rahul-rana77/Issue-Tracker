@@ -44,7 +44,7 @@ const registerUser = async (req, res) => {
         }
 
         const token = jwt.sign({
-                        id: existingUser._id,
+                        id: User._id,
                     }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
 
                     res.cookie("token", token, {
