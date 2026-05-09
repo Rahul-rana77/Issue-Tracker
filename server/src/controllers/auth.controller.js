@@ -75,6 +75,16 @@ const verifyEmail = async (req, res) => {
                     user.emailVerificationCode = undefined;
                     await user.save();
                     res.status(200).json({ message: "Email verified successfully" });
+
+                    const token = jwt.sign({
+                        id: user._id,
+                    }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Add token expiration for security
+
+                    res.cookie("token", token, {
+                        secure: true,
+                        sameSite: 'None',
+                        httpOnly: true // Add httpOnly for better security
+                    });
                 } 
             } catch (error) {
                 console.error("Error in verifyEmail:", error);
