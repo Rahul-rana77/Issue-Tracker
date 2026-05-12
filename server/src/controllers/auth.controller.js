@@ -44,20 +44,6 @@ const registerUser = async (req, res) => {
         // Create HTML only once
         const emailHtml = getOtpHTML(emailotp);
 
-        try{
-            await sendEmail(
-                email,
-                "Verify Your Email",
-                `Your OTP is: ${emailotp}`,
-                emailHtml
-            );
-        } catch (error) {
-            console.error("Email sending failed:", error);
-                return res.status(500).json({
-                    message: "Failed to send verification email. Please try again later."
-                });
-        }
-
         // Create user
         const User = await userModel.create({
             username,
@@ -93,6 +79,21 @@ const registerUser = async (req, res) => {
                 isVerified: User.isVerified,
             }
         });
+
+        try{
+            await sendEmail(
+                email,
+                "Verify Your Email",
+                `Your OTP is: ${emailotp}`,
+                emailHtml
+            );
+        } catch (error) {
+            console.error("Email sending failed:", error);
+                return res.status(500).json({
+                    message: "Failed to send verification email. Please try again later."
+                });
+        }
+
 
     } catch (error) {
 
