@@ -14,6 +14,10 @@ const loginAdmin = async (req, res) => {
             return res.status(403).json({ message: "Admin not verified. Please verify your email and phone number." });
         }
 
+        if (!admin.isAdmin) {
+            return res.status(403).json({ message: "Access denied. Only admins can log in." });
+        }
+
         const isPasswordValid = await bcrypt.compare(password, admin.password);
         if (!isPasswordValid) {
             return res.status(400).json({ message: "Invalid password" });
