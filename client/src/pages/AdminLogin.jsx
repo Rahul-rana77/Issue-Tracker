@@ -11,12 +11,12 @@ const AdminLogin = () => {
     e.preventDefault()
 
     const email = e.target.email.value
-    const code = e.target.password.value
+    const password = e.target.password.value
 
     try{
         const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/api/auth/admin/login`,{
             email,
-            code
+            password
         },{
 
         withCredentials: true
